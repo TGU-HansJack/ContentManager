@@ -145,12 +145,21 @@ class Plugin implements PluginInterface
         Helper::addAction('books-edit','ContentManager_Action');
         Helper::addAction('movies-edit','ContentManager_Action');
         Helper::addAction('goods-edit','ContentManager_Action');
-        // 注册内容解析钩子
-        \Typecho\Plugin::factory('Widget_Abstract_Contents')->contentEx_66 = __CLASS__ .'::parseContentShortcode';
-        // 插件激活时加载CSS
-        \Typecho\Plugin::factory('Widget_Archive')->header = __CLASS__ . '::addCss';
+       // 更改钩子名称并检查是否已占用
+        $hookName = 'contentEx_ContentManager';
+            if (!self::isHookOccupied($hookName)) {
+        \Typecho\Plugin::factory('Widget_Abstract_Contents')->{$hookName} = __CLASS__. '::parseContentShortcode';
+        }
 
-        return _t('ContentManager 插件已激活');
+    // 插件激活时加载CSS
+    \Typecho\Plugin::factory('Widget_Archive')->header = __CLASS__. '::addCss';
+
+    return _t('ContentManager 插件已激活');
+    }
+
+    private static function isHookOccupied($hookName) {
+    $factory = \Typecho\Plugin::factory('Widget_Abstract_Contents');
+    return isset($factory->{$hookName});
     }
 
     /**
