@@ -146,6 +146,7 @@ class Plugin implements PluginInterface
         Helper::addAction('movies-edit','ContentManager_Action');
         Helper::addAction('goods-edit','ContentManager_Action');
        // 更改钩子名称并检查是否已占用
+        //更新
         $hookName = 'contentEx_ContentManager';
             if (!self::isHookOccupied($hookName)) {
         \Typecho\Plugin::factory('Widget_Abstract_Contents')->{$hookName} = __CLASS__. '::parseContentShortcode';
